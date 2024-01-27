@@ -2,8 +2,14 @@ package silo
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
+)
+
+var (
+	ErrWriteFile = errors.New("error writing file")
+	ErrReadFile  = errors.New("error reading file")
 )
 
 type File struct {
@@ -23,7 +29,7 @@ func NewFile(filename string) Driver {
 func (f File) Load() error {
 	rawJson, err := os.ReadFile(f.filename)
 	if err != nil {
-		return fmt.Errorf("error reading file: %w", err)
+		return fmt.Errorf("%w: %w", ErrReadFile, err)
 	}
 
 	return json.Unmarshal(rawJson, &f.cache)
@@ -32,9 +38,14 @@ func (f File) Load() error {
 func (f File) Save() error {
 	rawJSON, err := json.Marshal(f.cache)
 	if err != nil {
-		return fmt.Errorf("error writing file: %w", err)
+		return fmt.Errorf("%w: %w", ErrWriteFile, err)
 	}
-	return os.WriteFile(f.filename, rawJSON, 0600)
+
+	if err := os.WriteFile(f.filename, rawJSON, 0600); err != nil {
+		return fmt.Errorf("%w: %w", ErrWriteFile, err)
+	}
+
+	return nil
 }
 
 func (f File) Get(key string) (any, error) {
@@ -44,7 +55,12 @@ func (f File) Get(key string) (any, error) {
 		}
 		f.dirty = false
 	}
-	return f.cache[key], nil
+
+	value, ok := f.cache[key]
+	if !ok {
+		return nil, ErrKeyNotExist
+	}
+	return value, nil
 }
 
 func (f File) Set(key string, value any) error {
