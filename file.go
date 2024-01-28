@@ -19,7 +19,7 @@ type File struct {
 }
 
 func NewFile(filename string) Driver {
-	return File{
+	return &File{
 		filename: filename,
 		dirty:    true,
 		cache:    make(map[string]any),
@@ -48,7 +48,7 @@ func (f File) Save() error {
 	return nil
 }
 
-func (f File) Get(key string) (any, error) {
+func (f *File) Get(key string) (any, error) {
 	if f.dirty {
 		if err := f.Load(); err != nil {
 			return nil, err

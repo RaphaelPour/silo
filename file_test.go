@@ -25,7 +25,7 @@ func TestFileCRUD(t *testing.T) {
 
 	require.NoError(t, store.Delete("a"))
 
-	rawValue, err = store.Get("a")
+	_, err = store.Get("a")
 	require.ErrorIs(t, err, ErrKeyNotExist)
 }
 
