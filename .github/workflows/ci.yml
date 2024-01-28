@@ -29,10 +29,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: install changelogger
         run: curl -Ls https://git.io/changelogger.sh | sh
-      - uses: actions/download-artifact@master
-        with:
-          name: build-artifacts
-          path: ci-build
       - name: Save changelog entries of current release
         run: ./bin/changelogger release last > CHANGELOG_RELEASE.md
       - name: Print changelog entries for debugging
