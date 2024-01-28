@@ -1,4 +1,4 @@
-![](silo.png)
+![](logo.png)
 
 # silo
 
