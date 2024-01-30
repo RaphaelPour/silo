@@ -1,3 +1,9 @@
+# For next release
+  * **Raphael Pour**
+    * layers: introduces layers, add (access) log layer
+
+*Not released yet*
+
 # Major Release v1.0.0 (2024-01-28)
   * **Raphael Pour**
     * Add direct and file driver
