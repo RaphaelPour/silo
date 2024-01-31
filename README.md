@@ -227,3 +227,14 @@ $ cat test.log
 2024-01-30 17:10:13 [   GET] favorite-color=purple err=<nil>
 2024-01-30 17:10:13 [DELETE] favorite-color err=<nil>
 ```
+
+## Alternatives
+
+Checkout alternative storage libs:
+
+- [bolt](https://github.com/boltdb/bolt)
+- [BadgerDB](https://github.com/dgraph-io/badger)
+- [blackholeDB](https://github.com/bregydoc/blackholeDB)
+- [Jet](https://github.com/go-gems/Jet)
+
+Inspired by O'Reilly's [Cloud Native Go](https://www.oreilly.com/library/view/cloud-native-go/9781492076322/) where a [key-value service](https://github.com/cloud-native-go/examples/tree/main/ch05) is built.
