@@ -5,6 +5,7 @@
       * add (access) log layer
       * add lock layer
       * add discard layer
+      * add read-only layer
 
 *Not released yet*
 
