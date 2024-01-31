@@ -11,6 +11,7 @@ Available layers:
 - `File`: stores key-value pairs as json in a file + in-memory read cache
 - `Log`: logs any operation to file
 - `Lock`: mutex over all operations to prevent concurrent read/write
+- `Discard`: discard any operation without any error (like [mysql's blackhole](https://dev.mysql.com/doc/refman/8.0/en/blackhole-storage-engine.html) or [golang io's Discard writer](https://pkg.go.dev/io#Discard)) 
 
 ## Example
 
