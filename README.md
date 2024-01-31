@@ -2,7 +2,15 @@
 
 # Silo
 
-Key-Value Store to easily add persistence to your application. 
+Key-Value Store to easily add persistence to your application. Silo offers various layers that can be stacked onto
+another.
+
+Available layers:
+
+- `Direct`: stores key-value pairs in-memory
+- `File`: stores key-value pairs as json in a file + in-memory read cache
+- `Log`: logs any operation to file
+- `Lock`: mutex over all operations to prevent concurrent read/write
 
 ## Example
 
