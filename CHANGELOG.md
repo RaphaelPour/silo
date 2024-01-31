@@ -1,6 +1,10 @@
 # For next release
   * **Raphael Pour**
-    * layers: introduces layers, add (access) log layer
+    * layers: 
+      * introduces layers
+      * add (access) log layer
+      * add lock layer
+      * add discard layer
 
 *Not released yet*
 
