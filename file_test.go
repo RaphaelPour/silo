@@ -1,8 +1,6 @@
 package silo
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"testing"
 
@@ -15,24 +13,11 @@ func TestFileCRUD(t *testing.T) {
 	defer os.Remove(f.Name())
 
 	store := NewFile(f.Name())
-	require.NoError(t, store.Set("a", "b"))
+	require.NoError(t, store.Write([]byte("abc")))
 
-	rawValue, err := store.Get("a")
+	value, err := store.Read()
 	require.NoError(t, err)
-	value, ok := rawValue.(string)
-	require.True(t, ok)
-	require.Equal(t, "b", value)
-
-	require.NoError(t, store.Delete("a"))
-
-	_, err = store.Get("a")
-	require.ErrorIs(t, err, ErrKeyNotExist)
-}
-
-type WontMarshal int
-
-func (w WontMarshal) MarshalJSON() ([]byte, error) {
-	return nil, errors.New("I don't like to get marshaled")
+	require.Equal(t, []byte("abc"), value)
 }
 
 func TestFilePersist(t *testing.T) {
@@ -41,31 +26,18 @@ func TestFilePersist(t *testing.T) {
 	defer os.Remove(f.Name())
 
 	store := NewFile(f.Name())
-	require.NoError(t, store.Set("a", "b"))
+	require.NoError(t, store.Write([]byte("a")))
 
 	store2 := NewFile(f.Name())
-	rawValue, err := store2.Get("a")
+	value, err := store2.Read()
 	require.NoError(t, err)
-	value, ok := rawValue.(string)
-	require.True(t, ok)
-	require.Equal(t, "b", value)
+	require.Equal(t, []byte("a"), value)
 }
 
 func TestFileBadFile(t *testing.T) {
 	store := NewFile("bad/file")
-	require.ErrorIs(t, store.Set("a", "b"), ErrWriteFile)
+	require.ErrorIs(t, store.Write([]byte("abc")), ErrWriteFile)
 
-	_, err := store.Get("a")
+	_, err := store.Read()
 	require.ErrorIs(t, err, ErrReadFile)
-}
-
-func TestFileBadData(t *testing.T) {
-	f, err := os.CreateTemp("", "dump")
-	require.NoError(t, err)
-	defer os.Remove(f.Name())
-
-	store := NewFile(f.Name())
-	require.ErrorIs(t, store.Set("a", WontMarshal(1)), ErrWriteFile)
-
-	fmt.Println(store.Get("a"))
 }

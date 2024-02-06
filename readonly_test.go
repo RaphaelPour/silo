@@ -1,7 +1,6 @@
 package silo
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -17,7 +16,6 @@ func TestReadOnly(t *testing.T) {
 	rawValue, err := store.Get("a")
 	require.NoError(t, err)
 	value, ok := rawValue.(string)
-	fmt.Printf("value: %v\n", rawValue)
 	require.True(t, ok)
 	require.Equal(t, "b", value)
 

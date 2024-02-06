@@ -4,7 +4,7 @@ type Direct struct {
 	store map[string]any
 }
 
-func NewDirect() Driver {
+func NewDirect() KeyValueLayer {
 	return Direct{
 		store: make(map[string]any),
 	}
