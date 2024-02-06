@@ -19,11 +19,11 @@ func prettifyErr(err error) string {
 }
 
 type Log struct {
-	parent Driver
+	parent KeyValueLayer
 	file   *os.File
 }
 
-func NewLog(parent Driver, filename string) (Driver, error) {
+func NewLog(parent KeyValueLayer, filename string) (KeyValueLayer, error) {
 	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		return nil, fmt.Errorf("%w %s: %w", ErrOpenLogFile, filename, err)

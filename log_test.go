@@ -8,15 +8,11 @@ import (
 )
 
 func TestLogCRUD(t *testing.T) {
-	f, err := os.CreateTemp("", "dump")
-	require.NoError(t, err)
-	defer os.Remove(f.Name())
-
 	logFile, err := os.CreateTemp("", "log")
 	require.NoError(t, err)
 	defer os.Remove(logFile.Name())
 
-	store, err := NewLog(NewFile(f.Name()), logFile.Name())
+	store, err := NewLog(NewDirect(), logFile.Name())
 	require.NoError(t, err)
 	require.NoError(t, store.Set("a", "b"))
 
@@ -40,6 +36,6 @@ func TestLogCRUD(t *testing.T) {
 }
 
 func TestLogBadFile(t *testing.T) {
-	_, err := NewLog(NewFile("valid"), "/in/val/id")
+	_, err := NewLog(NewDirect(), "/in/val/id")
 	require.ErrorIs(t, err, ErrOpenLogFile)
 }

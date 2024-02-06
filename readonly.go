@@ -7,10 +7,10 @@ var (
 )
 
 type ReadOnly struct {
-	parent Driver
+	parent KeyValueLayer
 }
 
-func NewReadOnly(parent Driver) Driver {
+func NewReadOnly(parent KeyValueLayer) KeyValueLayer {
 	return ReadOnly{
 		parent: parent,
 	}

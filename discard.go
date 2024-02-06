@@ -2,7 +2,7 @@ package silo
 
 type Discard struct{}
 
-func NewDiscard() Driver {
+func NewDiscard() KeyValueLayer {
 	return Discard{}
 }
 

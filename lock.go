@@ -11,12 +11,12 @@ var (
 )
 
 type Lock struct {
-	parent Driver
+	parent KeyValueLayer
 	mutex  chan struct{}
 	ctx    context.Context
 }
 
-func NewLock(ctx context.Context, parent Driver) Driver {
+func NewLock(ctx context.Context, parent KeyValueLayer) KeyValueLayer {
 	return Lock{
 		parent: parent,
 		mutex:  make(chan struct{}, 1),
