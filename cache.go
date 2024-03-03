@@ -24,6 +24,13 @@ func (c Cache) Get(key string) (any, error) {
 }
 
 func (c Cache) Set(key string, value any) error {
+	if c.m == nil {
+		var err error
+		c.m, err = c.parent.Read()
+		if err != nil {
+			return err
+		}
+	}
 	c.m[key] = value
 	return c.parent.Write(c.m)
 }
