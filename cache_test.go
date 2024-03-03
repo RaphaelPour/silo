@@ -12,7 +12,7 @@ type DirectKVLayer struct {
 
 func NewDirectKVLayer() DirectKVLayer {
 	return DirectKVLayer{
-		m: new(map[string]any),
+		m: make(map[string]any),
 	}
 }
 
