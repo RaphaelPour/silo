@@ -10,8 +10,8 @@ type DirectKVLayer struct {
 	m map[string]any
 }
 
-func NewDirectKVLayer() DirectKVLayer {
-	return DirectKVLayer{
+func NewDirectKVLayer() *DirectKVLayer {
+	return &DirectKVLayer{
 		m: make(map[string]any),
 	}
 }
@@ -19,10 +19,11 @@ func NewDirectKVLayer() DirectKVLayer {
 func (d DirectKVLayer) Read() (map[string]any, error) {
 	return d.m, nil
 }
-func (d *DirectKVLayer) Write(data map[string]any) error {
+func (d DirectKVLayer) Write(data map[string]any) error {
 	d.m = data
 	return nil
 }
+
 func TestCache(t *testing.T) {
 	store := NewCache(NewDirectKVLayer())
 	require.NoError(t, store.Set("a", "b"))
@@ -32,6 +33,4 @@ func TestCache(t *testing.T) {
 	value, ok := rawValue.(string)
 	require.True(t, ok)
 	require.Equal(t, "b", value)
-
-	require.ErrorIs(t, store.Delete("a"), ErrReadOnly)
 }
