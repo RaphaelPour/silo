@@ -16,7 +16,7 @@ import (
 // $ value
 
 func main() {
-	store := silo.NewFile("blob.storage")
+	store := silo.NewCache(silo.NewJson(silo.NewFile("blob.storage")))
 	api := http.NewServeMux()
 	api.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		key := req.URL.Path[1:]
