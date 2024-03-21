@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	// create a new file-based silo
-	store := silo.NewCache(silo.NewJson(silo.NewFile("data.store")))
+	// create a new direct silo
+	store := silo.NewDirect()
 
 	// set a key
 	err := store.Set("favorite-color", "purple")

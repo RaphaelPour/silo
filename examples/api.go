@@ -16,12 +16,14 @@ import (
 // $ value
 
 func main() {
-	store := silo.NewFile("blob.storage")
+	store := silo.NewCache(silo.NewJson(silo.NewFile("blob.storage")))
 	api := http.NewServeMux()
 	api.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		key := req.URL.Path[1:]
 
 		if req.Method == http.MethodGet {
+			fmt.Printf("[GET ] /%s\n", key)
+
 			value, err := store.Get(key)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
@@ -31,13 +33,15 @@ func main() {
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "%s", value)
 		} else if req.Method == http.MethodPost {
+			fmt.Printf("[POST] /%s\n", key)
+
 			body, err := ioutil.ReadAll(req.Body)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Fprintf(w, err.Error())
 				return
 			}
-			if err := store.Set(key, body); err != nil {
+			if err := store.Set(key, string(body)); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Fprintf(w, err.Error())
 				return
