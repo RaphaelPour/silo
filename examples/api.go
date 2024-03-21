@@ -41,7 +41,7 @@ func main() {
 				fmt.Fprintf(w, err.Error())
 				return
 			}
-			if err := store.Set(key, body); err != nil {
+			if err := store.Set(key, string(body)); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Fprintf(w, err.Error())
 				return
