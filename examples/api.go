@@ -22,6 +22,8 @@ func main() {
 		key := req.URL.Path[1:]
 
 		if req.Method == http.MethodGet {
+			fmt.Printf("[GET ] /%s\n", key)
+
 			value, err := store.Get(key)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
@@ -31,6 +33,8 @@ func main() {
 			w.WriteHeader(http.StatusOK)
 			fmt.Fprintf(w, "%s", value)
 		} else if req.Method == http.MethodPost {
+			fmt.Printf("[POST] /%s\n", key)
+
 			body, err := ioutil.ReadAll(req.Body)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
