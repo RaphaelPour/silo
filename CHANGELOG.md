@@ -6,6 +6,7 @@
       * add lock layer
       * add discard layer
       * add read-only layer
+    * add cache keyvalue layer
 
 *Not released yet*
 
