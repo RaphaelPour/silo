@@ -36,6 +36,16 @@ func (d *DirectDataLayer) Write(data []byte) error {
 	return nil
 }
 
+type BadReaderLayer struct{}
+
+func (b BadReaderLayer) Read() ([]byte, error) {
+	return nil, errors.New("no space left on device")
+}
+
+func (b BadReaderLayer) Write(_ []byte) error {
+	return errors.New("no space left on device")
+}
+
 func TestJsonReadWrite(t *testing.T) {
 	store := NewJson(new(DirectDataLayer))
 	require.NoError(t, store.Write(map[string]any{"a": "bc"}))
@@ -51,11 +61,19 @@ func TestJsonBadDataWrite(t *testing.T) {
 }
 
 func TestJsonBadDataRead(t *testing.T) {
-	ddl := new(DiscardDataLayer)
-	err := ddl.Write([]byte("abc"))
-	require.NoError(t, err)
+	t.Run("bad json", func(t *testing.T) {
+		ddl := new(DiscardDataLayer)
+		err := ddl.Write([]byte("abc"))
+		require.NoError(t, err)
 
-	store := NewJson(ddl)
-	_, err = store.Read()
-	require.ErrorContains(t, err, "unexpected end of JSON input")
+		store := NewJson(ddl)
+		_, err = store.Read()
+		require.ErrorContains(t, err, "unexpected end of JSON input")
+	})
+
+	t.Run("bad parent", func(t *testing.T) {
+		store := NewJson(BadReaderLayer{})
+		_, err := store.Read()
+		require.Error(t, err)
+	})
 }
